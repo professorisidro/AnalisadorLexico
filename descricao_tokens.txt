@@ -5,7 +5,7 @@ NUMEROS
 PONTUACAO
 	;
 OP_REL
-	> | >= | < | <= | == | !=
+	> | < | = | !=
 OP_ATR
 	= 
 

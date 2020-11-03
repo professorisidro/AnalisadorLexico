@@ -22,6 +22,7 @@ public class MainClass {
 		}
 		catch (Exception ex) {
 			System.out.println("Generic Error!!");
+			System.out.println(ex.getClass().getName());
 		}
 	}
 }

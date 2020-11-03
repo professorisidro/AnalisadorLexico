@@ -45,14 +45,18 @@ public class IsiScanner {
 					estado = 1;
 				}
 				else if (isDigit(currentChar)) {
-					estado = 3;
+					estado = 2;
 					term += currentChar;
 				}
 				else if (isSpace(currentChar)) {
 					estado = 0;
 				}
 				else if (isOperator(currentChar)) {
-					estado = 5;
+					term += currentChar;
+					token = new Token();
+					token.setType(Token.TK_OPERATOR);
+					token.setText(term);
+					return token;
 				}
 				else {
 					throw new IsiLexicalException("Unrecognized SYMBOL");
@@ -63,44 +67,36 @@ public class IsiScanner {
 					estado = 1;
 					term += currentChar;
 				}
-				else if (isSpace(currentChar) || isOperator(currentChar)){
-					estado = 2;
+				else if (isSpace(currentChar) || isOperator(currentChar) || isEOF(currentChar)){
+					if (!isEOF(currentChar))
+						back();
+					token = new Token();
+					token.setType(Token.TK_IDENTIFIER);
+					token.setText(term);
+					return token;
 				}
 				else {
 					throw new IsiLexicalException("Malformed Identifier");
 				}
 				break;
 			case 2:
-				back();
-				token = new Token();
-				token.setType(Token.TK_IDENTIFIER);
-				token.setText(term);
-				return token;
-			case 3:
-				if (isDigit(currentChar)) {
-					estado = 3;
+				if (isDigit(currentChar) || currentChar == '.') {
+					estado = 2;
 					term += currentChar;
 				}
-				else if (!isChar(currentChar)) {
-					estado = 4;
+				else if (!isChar(currentChar) || isEOF(currentChar)) {
+					if (!isEOF(currentChar))
+						back();
+					token = new Token();
+					token.setType(Token.TK_NUMBER);
+					token.setText(term);
+					return token;
 				}
 				else {
 					throw new IsiLexicalException("Unrecognized Number");
 				}
 				break;
-			case 4:
-				token = new Token();
-				token.setType(Token.TK_NUMBER);
-				token.setText(term);
-				back();
-				return token;
-			case 5:
-				term += currentChar;
-				token = new Token();
-				token.setType(Token.TK_OPERATOR);
-				token.setText(term);
-				return token;
-		    }
+			}
 		}
 		
 		
@@ -116,21 +112,28 @@ public class IsiScanner {
 	}
 	
 	private boolean isOperator(char c) {
-		return c == '>' || c == '<' || c == '=' || c=='!';
+		return c == '>' || c == '<' || c == '=' || c == '!' || c == '+' || c == '-' || c == '*' || c == '/';
 	}
 	private boolean isSpace(char c) {
 		return c == ' ' || c == '\t' || c == '\n' || c == '\r'; 
 	}
 	
 	private char nextChar() {
+		if (isEOF()) {
+			return '\0';
+		}
 		return content[pos++];
 	}
 	private boolean isEOF() {
-		return pos == content.length;
+		return pos >= content.length;
 	}
 	
     private void back() {
     	pos--;
+    }
+    
+    private boolean isEOF(char c) {
+    	return c == '\0';
     }
 	
 	
