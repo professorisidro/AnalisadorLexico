@@ -1,0 +1,18 @@
+Dada a gramática G
+
+G = (Vn, Vt, P, S)
+
+Vn = E, T, OP
+Vt = id, num, + , - , * , /
+
+1. E ->   E OP T | T
+2. T ->  id | num
+3. OP ->  + | - | * | /
+
+
+* precisamos reescrever a regra 1, transformando-a em
+
+1a.  E  ->  T E'
+1b.  E' -> OP T E' | &
+2.   T  -> id | num
+3.   OP -> + | - | * | /

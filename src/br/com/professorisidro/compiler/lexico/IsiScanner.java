@@ -11,14 +11,18 @@ public class IsiScanner {
 	private char[] content;
 	private int    estado;
 	private int    pos;
+	private int    line;
+	private int    column;
 	
 	public IsiScanner(String filename) {
 		try {
+			line = 1;
+			column = 0;
 			String txtConteudo;
 			txtConteudo = new String(Files.readAllBytes(Paths.get(filename)),StandardCharsets.UTF_8);
-			System.out.println("DEBUG --------");
-			System.out.println(txtConteudo);
-			System.out.println("--------------");
+//			System.out.println("DEBUG --------");
+//			System.out.println(txtConteudo);
+//			System.out.println("--------------");
 			content = txtConteudo.toCharArray();
 			pos=0;
 		}
@@ -37,6 +41,7 @@ public class IsiScanner {
 		estado = 0;
 		while (true) {
 			currentChar = nextChar();
+			column++;
 			
 			switch(estado) {
 			case 0:
@@ -56,6 +61,8 @@ public class IsiScanner {
 					token = new Token();
 					token.setType(Token.TK_OPERATOR);
 					token.setText(term);
+					token.setLine(line);
+					token.setColumn(column - term.length());
 					return token;
 				}
 				else {
@@ -73,6 +80,8 @@ public class IsiScanner {
 					token = new Token();
 					token.setType(Token.TK_IDENTIFIER);
 					token.setText(term);
+					token.setLine(line);
+					token.setColumn(column - term.length());
 					return token;
 				}
 				else {
@@ -90,6 +99,8 @@ public class IsiScanner {
 					token = new Token();
 					token.setType(Token.TK_NUMBER);
 					token.setText(term);
+					token.setLine(line);
+					token.setColumn(column - term.length());
 					return token;
 				}
 				else {
@@ -115,6 +126,10 @@ public class IsiScanner {
 		return c == '>' || c == '<' || c == '=' || c == '!' || c == '+' || c == '-' || c == '*' || c == '/';
 	}
 	private boolean isSpace(char c) {
+		if (c == '\n' || c== '\r') {
+			line++;
+			column=0;
+		}
 		return c == ' ' || c == '\t' || c == '\n' || c == '\r'; 
 	}
 	

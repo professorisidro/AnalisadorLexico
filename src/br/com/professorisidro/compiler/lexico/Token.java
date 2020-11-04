@@ -7,8 +7,14 @@ public class Token {
 	public static final int TK_PONCTUATION = 3;
 	public static final int TK_ASSIGN      = 4;
 	
+	public static final String TK_TEXT[] = {
+			"IDENTIFIER", "NUMBER", "OPERATOR", "PONCTUACTION", "ASSIGNMENT"
+	};
+	
 	private int    type;
 	private String text;
+	private int    line;
+	private int    column;
 	
 	public Token(int type, String text) {
 		super();
@@ -39,6 +45,22 @@ public class Token {
 	@Override
 	public String toString() {
 		return "Token [type=" + type + ", text=" + text + "]";
+	}
+
+	public int getLine() {
+		return line;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
+	}
+
+	public int getColumn() {
+		return column;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
 	}
 	
 	
