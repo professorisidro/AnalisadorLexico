@@ -37,6 +37,6 @@ P = dado pelas regras abaixo
 	
 Tranformamos a gramática em LL(1). A partir daí temos o nosso grafo de análise Sintática, dado pela figura abaixo.
 
-![Automato de reconhecimento dos Tokens](http://www.professorisidro.com.br/wp-content/uploads/Automato.png)
+![Automato de reconhecimento dos Tokens](http://www.professorisidro.com.br/wp-content/uploads/AnalisadorSintatico.png)
 
 O Código está disponível no restante do repo.
