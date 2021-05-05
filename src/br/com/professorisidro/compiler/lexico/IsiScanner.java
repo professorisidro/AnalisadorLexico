@@ -145,6 +145,7 @@ public class IsiScanner {
 	
     private void back() {
     	pos--;
+    	column--;
     }
     
     private boolean isEOF(char c) {
